@@ -2,3 +2,5 @@ app:
   build: .
   volumes:
     - .:/usr/src/app
+  env_file: .env
+  command: bin/hubot --adapter xmpp
