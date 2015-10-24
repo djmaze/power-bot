@@ -1,4 +1,4 @@
-FROM node
+FROM node:0.10
 
 RUN npm install -g yo generator-hubot
 
