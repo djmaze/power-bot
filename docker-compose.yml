@@ -2,5 +2,12 @@ app:
   build: .
   volumes:
     - .:/usr/src/app
+  links:
+    - redis:redis
+  environment:
+    REDISTOGO_URL: redis://redis
   env_file: .env
   command: bin/hubot --adapter xmpp
+
+redis:
+  image: redis
