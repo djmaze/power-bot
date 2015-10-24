@@ -1,11 +1,16 @@
 [
   "hubot-diagnostics",
+  "hubot-decides",
   "hubot-help",
   "hubot-google-images",
   "hubot-google-translate",
   "hubot-pugme",
   "hubot-maps",
+  "hubot-qr",
   "hubot-redis-brain",
+  "hubot-remind-advanced",
   "hubot-rules",
-  "hubot-shipit"
+  "hubot-shipit",
+  "hubot-spotify-playlist",
+  "hubot-weather"
 ]
