@@ -8,11 +8,15 @@
 #   None
 #
 # Commands:
-#   hubot was (ist|war) (heute|morgen|gestern) los - Show nadann events for the given date
+#   hubot was <ist|war> am <day> los - Show nadann events for the given date (the 'am' is optional)
+#   - ist/war; doesn't matter
+#   - day: heute|morgen|gestern|Montag|..|Sonntag
 #
 # Author:
 #   djmaze
 cheerio = require 'cheerio'
+later = require 'later'
+moment = require 'moment'
 
 class NadannEventFetcher
   constructor: (@robot) ->
@@ -34,19 +38,23 @@ class NadannEventFetcher
   dayNumberFor: (date) ->
     if date.getDay() < 3 then date.getDay() + 4 else date.getDay() - 3
 
-getDateFor = (date_word) ->
+getDateFor = (dateWord) ->
   today = new Date()
-  switch date_word
+  switch dateWord
     when 'heute', '' then new Date()
     when 'morgen' then new Date(today.valueOf() + 1000*60*60*24)
     when 'gestern' then new Date(today.valueOf() - 1000*60*60*24)
+    else
+      englishDateWord = dateWord.replace(/montag/i, 'monday').replace(/dienstag/i, 'tuesday').replace(/mittwoch/i, 'wednesday').replace(/donnerstag/i, 'thursday').replace(/freitag/i, 'friday').replace(/samstag/i, 'saturday').replace(/sonntag/i, 'sunday')
+      later.schedule(later.parse.text('on ' + englishDateWord)).next()
 
 module.exports = (robot) ->
-  robot.respond /was (ist|war) (.+) los/i, (msg) ->
-    date = getDateFor msg.match[2]
+  robot.respond /was (ist|war) (am )?(\w+) los/i, (msg) ->
+    date = getDateFor msg.match[3]
+    dateString = moment(date).locale('de').format('LLLL').replace /\s\d+:\d+$/, ''
 
     new NadannEventFetcher(robot).getFor date, (events) ->
-      msg.send events.filter (event) ->
+      msg.send "Events am #{dateString}:\n" + events.filter (event) ->
         event.location.match /\b(sputnikhalle|(plan b)|(hot jazz club)|SpecOps|Metro|jovel|baracke|lwl-museum|(rote lola)|AMP|Triptychon|(Cuba Nova))\b/i
       .map (event) ->
         "- #{event.text} (#{event.location}, #{event.time} Uhr)"
