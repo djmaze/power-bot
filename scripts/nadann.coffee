@@ -46,5 +46,8 @@ module.exports = (robot) ->
     date = getDateFor msg.match[2]
 
     new NadannEventFetcher(robot).getFor date, (events) ->
-      for event in events
-        msg.send "#{event.text} (#{event.location}, #{event.time} Uhr)\n" if event.location.match /\b(sputnikhalle|(plan b)|(hot jazz club)|SpecOps|Metro|jovel|baracke|lwl-museum|(rote lola)|AMP|Triptychon|(Cuba Nova))\b/i
+      msg.send events.filter (event) ->
+        event.location.match /\b(sputnikhalle|(plan b)|(hot jazz club)|SpecOps|Metro|jovel|baracke|lwl-museum|(rote lola)|AMP|Triptychon|(Cuba Nova))\b/i
+      .map (event) ->
+        "- #{event.text} (#{event.location}, #{event.time} Uhr)"
+      .join("\n")
