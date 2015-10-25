@@ -51,6 +51,9 @@ getDateFor = (dateWord) ->
       englishDateWord = dateWord.replace(/montag/i, 'monday').replace(/dienstag/i, 'tuesday').replace(/mittwoch/i, 'wednesday').replace(/donnerstag/i, 'thursday').replace(/freitag/i, 'friday').replace(/samstag/i, 'saturday').replace(/sonntag/i, 'sunday')
       later.schedule(later.parse.text('on ' + englishDateWord)).next()
 
+locationWhitelisted = (name) ->
+  name.match /\b(sputnikhalle|(plan b)|(hot jazz club)|SpecOps|Metro|jovel|baracke|lwl-museum|(rote lola)|AMP|Triptychon|(Cuba Nova))\b/i
+
 module.exports = (robot) ->
   robot.respond /was (ist|war) (am )?(\w+) los/i, (msg) ->
     date = getDateFor msg.match[3]
@@ -59,7 +62,7 @@ module.exports = (robot) ->
 
     eventFetcher.getEventsFor date, (events) ->
       msg.send "Events am #{dateString}:\n" + events.filter (event) ->
-        event.location.match /\b(sputnikhalle|(plan b)|(hot jazz club)|SpecOps|Metro|jovel|baracke|lwl-museum|(rote lola)|AMP|Triptychon|(Cuba Nova))\b/i
+        locationWhitelisted event.location
       .map (event) ->
         "- #{event.text} (#{event.location}, #{event.time} Uhr)"
       .join("\n") +
