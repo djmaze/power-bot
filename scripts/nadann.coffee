@@ -21,8 +21,8 @@ moment = require 'moment'
 class NadannEventFetcher
   constructor: (@robot) ->
 
-  getFor: (date, cb) ->
-    @robot.http("http://www.nadann.de/Veranstaltungskalender/Tag/#{@dayNumberFor date}")
+  getEventsFor: (date, cb) ->
+    @robot.http(@getUrlFor(date))
       .get() (err, res, body) ->
         $ = cheerio.load body
         events = []
@@ -34,6 +34,9 @@ class NadannEventFetcher
             location: $('.event-location', $event).text().trim()
             text: $('.event-text', $event).text().trim()
         cb events
+
+  getUrlFor: (date) ->
+    "http://www.nadann.de/Veranstaltungskalender/Tag/#{@dayNumberFor date}"
 
   dayNumberFor: (date) ->
     if date.getDay() < 3 then date.getDay() + 4 else date.getDay() - 3
@@ -52,10 +55,12 @@ module.exports = (robot) ->
   robot.respond /was (ist|war) (am )?(\w+) los/i, (msg) ->
     date = getDateFor msg.match[3]
     dateString = moment(date).locale('de').format('LLLL').replace /\s\d+:\d+$/, ''
+    eventFetcher = new NadannEventFetcher robot
 
-    new NadannEventFetcher(robot).getFor date, (events) ->
+    eventFetcher.getEventsFor date, (events) ->
       msg.send "Events am #{dateString}:\n" + events.filter (event) ->
         event.location.match /\b(sputnikhalle|(plan b)|(hot jazz club)|SpecOps|Metro|jovel|baracke|lwl-museum|(rote lola)|AMP|Triptychon|(Cuba Nova))\b/i
       .map (event) ->
         "- #{event.text} (#{event.location}, #{event.time} Uhr)"
-      .join("\n")
+      .join("\n") +
+      "\n\n(Quelle: #{eventFetcher.getUrlFor date})"
