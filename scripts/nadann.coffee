@@ -8,9 +8,7 @@
 #   None
 #
 # Commands:
-#   hubot was <ist|war> am <day> los - Show nadann events for the given date (the 'am' is optional)
-#   - ist/war; doesn't matter
-#   - day: heute|morgen|gestern|Montag|..|Sonntag
+#   hubot was <ist|war> am <day> los - Show nadann events for the given date (the 'am' is optional). <day> - heute|morgen|gestern|Montag|..|Sonntag
 #
 # Author:
 #   djmaze
