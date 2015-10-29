@@ -17,7 +17,7 @@
     "hubot-pugme": "^0.1.0",
     "hubot-qr": "0.0.2",
     "hubot-redis-brain": "0.0.3",
-    "hubot-remind-advanced": "0.0.2",
+    "hubot-remind-advanced": "git+https://github.com/djmaze/hubot-remind-advanced.git#command-order-fix",
     "hubot-rules": "^0.1.1",
     "hubot-scripts": "^2.16.2",
     "hubot-shipit": "^0.2.0",
