@@ -50,7 +50,7 @@ getDateFor = (dateWord) ->
       later.schedule(later.parse.text('on ' + englishDateWord)).next()
 
 locationWhitelisted = (name) ->
-  name.match /\b(sputnikhalle|sputnikcafe|(plan b)|(hot jazz club)|SpecOps|Metro|jovel|baracke|lwl-museum|(rote lola)|AMP|Triptychon|(Cuba Nova))\b/i
+  name.match /\b(sputnikhalle|sputnikcafe|(plan b)|(hot jazz club)|SpecOps|Metro|jovel|baracke|lwl-museum|(rote lola)|AMP|Triptychon|(Cuba Nova)|(gleis 22)|(schwarzes schaf)|fusion|favela)\b/i
 
 module.exports = (robot) ->
   robot.respond /was (ist|war) (am )?(\w+) los/i, (msg) ->
