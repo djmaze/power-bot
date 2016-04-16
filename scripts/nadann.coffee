@@ -90,13 +90,11 @@ module.exports = (robot) ->
     location = msg.match[1]
     msg.send "Okay, verberge #{location}."
     blacklistedLocations.add location
-    showblacklistedLocations msg
 
   robot.respond /zeige events für (.+)/i, (msg) ->
     location = msg.match[1]
     msg.send "Okay, zeige #{location}."
     blacklistedLocations.add location
-    showblacklistedLocations msg
 
   robot.respond /verberge keine locations mehr/i, (msg) ->
     blacklistedLocations.clear()
