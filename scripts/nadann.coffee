@@ -39,6 +39,24 @@ class NadannEventFetcher
   dayNumberFor: (date) ->
     if date.getDay() < 3 then date.getDay() + 4 else date.getDay() - 3
 
+class BlacklistedLocations
+  constructor: (@robot) ->
+
+  includes: (name) ->
+    for location in @locations()
+      console.log "#{name}.match /#{location}/i"
+      return true if name.match ///#{location}///i
+    return false
+
+  add: (location) ->
+    @locations().push location if location not in @locations()
+
+  clear: ->
+    @robot.brain.data['nadann_blacklisted_locations'] = []
+
+  locations: ->
+    @robot.brain.data['nadann_blacklisted_locations'] ||= []
+
 getDateFor = (dateWord) ->
   today = new Date()
   switch dateWord
@@ -49,10 +67,12 @@ getDateFor = (dateWord) ->
       englishDateWord = dateWord.replace(/montag/i, 'monday').replace(/dienstag/i, 'tuesday').replace(/mittwoch/i, 'wednesday').replace(/donnerstag/i, 'thursday').replace(/freitag/i, 'friday').replace(/samstag/i, 'saturday').replace(/sonntag/i, 'sunday')
       later.schedule(later.parse.text('on ' + englishDateWord)).next()
 
-locationWhitelisted = (name) ->
-  name.match /\b(sputnikhalle|sputnikcafe|(plan b)|(hot jazz club)|SpecOps|Metro|jovel|baracke|lwl-museum|(rote lola)|AMP|Triptychon|(Cuba Nova)|(gleis 22)|(schwarzes schaf)|fusion|favela)\b/i
-
 module.exports = (robot) ->
+  blacklistedLocations = new BlacklistedLocations(robot)
+
+  showblacklistedLocations = (msg) ->
+    msg.send "Aktuell verborgene Event-Locations:\n" + blacklistedLocations.locations().join("\n")
+
   robot.respond /was (ist|war) (am )?(\w+) los/i, (msg) ->
     date = getDateFor msg.match[3]
     dateString = moment(date).locale('de').format('LLLL').replace /\s\d+:\d+$/, ''
@@ -60,8 +80,27 @@ module.exports = (robot) ->
 
     eventFetcher.getEventsFor date, (events) ->
       msg.send "Events am #{dateString}:\n" + events.filter (event) ->
-        locationWhitelisted event.location
+        !blacklistedLocations.includes(event.location)
       .map (event) ->
         "- #{event.text} (#{event.location}, #{event.time} Uhr)"
       .join("\n") +
       "\n\n(Quelle: #{eventFetcher.getUrlFor date})"
+
+  robot.respond /verberge events für (.+)/i, (msg) ->
+    location = msg.match[1]
+    msg.send "Okay, verberge #{location}."
+    blacklistedLocations.add location
+    showblacklistedLocations msg
+
+  robot.respond /zeige events für (.+)/i, (msg) ->
+    location = msg.match[1]
+    msg.send "Okay, zeige #{location}."
+    blacklistedLocations.add location
+    showblacklistedLocations msg
+
+  robot.respond /verberge keine locations mehr/i, (msg) ->
+    blacklistedLocations.clear()
+    msg.send "Okay, keine Event-Locations werden mehr verborgen."
+
+  robot.respond /welche locations sind aktuell verborgen/i, (msg) ->
+    showblacklistedLocations msg
