@@ -89,13 +89,15 @@ module.exports = (robot) ->
     dateString = moment(date).locale('de').format('LLLL').replace /\s\d+:\d+$/, ''
     eventFetcher = new NadannEventFetcher robot
 
-    eventFetcher.getEventsFor date, (events) ->
-      msg.send "Events am #{dateString}:\n" + events.filter (event) ->
+    eventFetcher.getEventsFor date, (allEvents) ->
+      msg.send "Events am #{dateString}:" 
+      filteredEvents = allEvents.filter (event) ->
         !blacklistedLocations.includes(event.location)
       .map (event) ->
         "- #{event.text}"
-      .join("\n") +
-      "\n\n(Quelle: #{eventFetcher.getUrlFor date})"
+      for i in [0..filteredEvents.length-1] by 20
+        msg.send filteredEvents[i...i+20].join("\n")
+      msg.send "(Quelle: #{eventFetcher.getUrlFor date})"
 
   robot.respond /verberge events für (.+)/i, (msg) ->
     location = msg.match[1]
