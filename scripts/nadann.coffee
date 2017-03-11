@@ -24,20 +24,31 @@ class NadannEventFetcher
       .get() (err, res, body) ->
         $ = cheerio.load body
         events = []
-        for $event in $('.event')
-          date_text = $('.event-date', $event).text().trim()
+        for $event in $('.card-columns-events .card-text')
+          time_text = $('strong:first-child', $event).text().trim()
+          complete_text = $($event).text().replace(/\s+/g, ' ')
           events.push
-            date: date_text
-            time: date_text.match(/(\d+:\d+)/)[0]
-            location: $('.event-location', $event).text().trim()
-            text: $('.event-text', $event).text().trim()
-        cb events
+            time: time_text
+            title: $('strong:nth-child(2)', $event).text().trim()
+            location: $('em', $event).text().trim()
+            text: complete_text
+        sorted = events.sort (a,b) ->
+          if(a.time >= b.time) then 1 else -1
+        cb sorted
 
   getUrlFor: (date) ->
-    "http://www.nadann.de/Veranstaltungskalender/Tag/#{@dayNumberFor date}"
+    "https://www.nadann.de/rubriken/veranstaltungen/#{@dayNumberFor date}/"
 
   dayNumberFor: (date) ->
-    if date.getDay() < 3 then date.getDay() + 4 else date.getDay() - 3
+    switch date.getDay()
+      # FIXME What about the second wednesday?
+      when 0 then 'sonntag'
+      when 1 then 'montag'
+      when 2 then 'dienstag'
+      when 3 then 'mittwoch-i'
+      when 4 then 'donnerstag'
+      when 5 then 'freitag'
+      when 6 then 'samstag'
 
 class BlacklistedLocations
   constructor: (@robot) ->
@@ -82,7 +93,7 @@ module.exports = (robot) ->
       msg.send "Events am #{dateString}:\n" + events.filter (event) ->
         !blacklistedLocations.includes(event.location)
       .map (event) ->
-        "- #{event.text} (#{event.location}, #{event.time} Uhr)"
+        "- #{event.text}"
       .join("\n") +
       "\n\n(Quelle: #{eventFetcher.getUrlFor date})"
 
