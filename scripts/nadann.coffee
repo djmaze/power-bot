@@ -95,8 +95,8 @@ module.exports = (robot) ->
         !blacklistedLocations.includes(event.location)
       .map (event) ->
         "- #{event.text}"
-      for i in [0..filteredEvents.length-1] by 20
-        msg.send filteredEvents[i...i+20].join("\n")
+      for i in [0..filteredEvents.length-1] by 10
+        msg.send filteredEvents[i...i+10].join("\n")
       msg.send "(Quelle: #{eventFetcher.getUrlFor date})"
 
   robot.respond /verberge events für (.+)/i, (msg) ->
