@@ -1,8 +1,13 @@
-FROM node:4.2
+FROM node:6
 
 RUN npm install -g yo generator-hubot
 
-RUN groupadd -g 1000 app && useradd -u 1000 -g app -m -s /bin/bash app && mkdir /usr/src/app && chown app /usr/src/app
+USER node
 
-USER app
-WORKDIR /usr/src/app
+COPY --chown=node:node package.json /home/node/app/
+WORKDIR /home/node/app
+RUN npm install
+
+COPY --chown=node:node . /home/node/app
+
+CMD ["bin/hubot", "--adapter", "xmpp"]

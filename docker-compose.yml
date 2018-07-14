@@ -1,13 +1,23 @@
-app:
-  build: .
-  volumes:
-    - .:/usr/src/app
-  links:
-    - redis:redis
-  environment:
-    REDISTOGO_URL: redis://redis
-  env_file: .env
-  command: bin/hubot --adapter xmpp
+version: "3.4"
 
-redis:
-  image: redis
+services:
+  app:
+    build: .
+    image: mazzolino/power-bot
+    #volumes:
+      #- .:/home/node/app
+    environment:
+      REDISTOGO_URL: redis://redis
+    env_file: .env
+    networks:
+      - backend
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
+    networks:
+      - backend
+
+networks:
+  backend:
