@@ -10,4 +10,4 @@ RUN npm install
 
 COPY --chown=node:node . /home/node/app
 
-CMD ["bin/hubot", "--adapter", "xmpp"]
+CMD ["bin/hubot"]

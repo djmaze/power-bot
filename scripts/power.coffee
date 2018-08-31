@@ -33,9 +33,15 @@ module.exports = (robot) ->
       robot.brain.data['power'] ||= {}
 
   fromAdmin = (msg) ->
-    adminRegexp = new RegExp('^' + process.env.HUBOT_ADMIN_JID + '/')
-    jid = msg.envelope.user.privateChatJID
-    jid.match adminRegexp if jid
+    switch robot.adapterName
+      when 'xmpp'
+        adminRegexp = new RegExp('^' + process.env.HUBOT_XMPP_ADMIN_JID + '/')
+        jid = msg.envelope.user.privateChatJID
+        jid.match adminRegexp if jid
+      when 'matrix'
+        msg.envelope.user.id == process.env.HUBOT_MATRIX_ADMIN_ID
+      else
+        raise 'Unknown adapter'
 
   robot.respond /(erlaube|verbiete) strom/i, (msg) ->
     unless fromAdmin(msg)
