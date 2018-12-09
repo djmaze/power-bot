@@ -20,4 +20,4 @@ RUN yarn install --modules-folder /home/node/node_modules
 COPY --chown=node:node scripts external-scripts.json hubot-scripts.json /home/node/app/
 
 ENV PATH="/home/node/node_modules/.bin:${PATH}"
-CMD ["hubot"]
+CMD ["hubot", "--name", "power"]
