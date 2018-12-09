@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y apt-transport-https \
 
 USER node
 
-WORKDIR /home/node/app
 COPY --chown=node:node package.json yarn.lock /home/node/app/
+WORKDIR /home/node/app
 RUN yarn install --modules-folder /home/node/node_modules
 
 COPY --chown=node:node scripts external-scripts.json hubot-scripts.json /home/node/app/
