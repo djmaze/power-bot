@@ -23,7 +23,7 @@
     "hubot-shipit": "^0.2.0",
     "hubot-spotify-playlist": "^0.1.0",
     "hubot-weather": "^1.0.3",
-    "hubot-xmpp": "^0.1.18",
+    "hubot-xmpp": "^0.2.0",
     "later": "^1.2.0",
     "moment": "^2.10.6"
   },
