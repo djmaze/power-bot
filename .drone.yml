@@ -70,3 +70,14 @@ steps:
 depends_on:
   - amd64
   - arm
+
+---
+kind: secret
+
+external_data:
+  docker_username:
+    path: secret/docker
+    name: username
+  docker_password:
+    path: secret/docker
+    name: password
