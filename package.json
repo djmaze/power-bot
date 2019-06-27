@@ -7,7 +7,7 @@
   "dependencies": {
     "cheerio": "^0.19.0",
     "hubot": "^2.16.0",
-    "hubot-decides": "0.0.7",
+    "hubot-decides": "https://github.com/djmaze/hubot-decides",
     "hubot-diagnostics": "0.0.1",
     "hubot-google-translate": "^0.2.0",
     "hubot-help": "^0.1.1",

@@ -5,6 +5,7 @@
 CSSselect@~0.4.0:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/CSSselect/-/CSSselect-0.4.1.tgz#f8ab7e1f8418ce63cda6eb7bd778a85d7ec492b2"
+  integrity sha1-+Kt+H4QYzmPNput713ioXX7EkrI=
   dependencies:
     CSSwhat "0.4"
     domutils "1.4"
@@ -12,6 +13,7 @@ CSSselect@~0.4.0:
 CSSwhat@0.4:
   version "0.4.7"
   resolved "https://registry.yarnpkg.com/CSSwhat/-/CSSwhat-0.4.7.tgz#867da0ff39f778613242c44cfea83f0aa4ebdf9b"
+  integrity sha1-hn2g/zn3eGEyQsRM/qg/CqTr35s=
 
 abbrev@1:
   version "1.1.1"
@@ -210,6 +212,7 @@ chalk@^1.0.0:
 cheerio@^0.18.0:
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-0.18.0.tgz#4e1c06377e725b740e996e0dfec353863de677fa"
+  integrity sha1-ThwGN35yW3QOmW4N/sNThj3md/o=
   dependencies:
     CSSselect "~0.4.0"
     dom-serializer "~0.0.0"
@@ -457,6 +460,7 @@ dom-serializer@0, dom-serializer@~0.1.0:
 dom-serializer@~0.0.0:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/dom-serializer/-/dom-serializer-0.0.1.tgz#9589827f1e32d22c37c829adabd59b3247af8eaf"
+  integrity sha1-lYmCfx4y0iw3yCmtq9WbMkevjq8=
   dependencies:
     domelementtype "~1.1.1"
     entities "~1.1.1"
@@ -752,9 +756,9 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-hubot-decides@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/hubot-decides/-/hubot-decides-0.0.7.tgz#7b85a21a362f51639c77280e449ebe642900e6fb"
+"hubot-decides@https://github.com/djmaze/hubot-decides":
+  version "0.0.8"
+  resolved "https://github.com/djmaze/hubot-decides#be605f222275a06bbfe2cd231ca0ee4281f299d2"
   dependencies:
     cheerio "^0.18.0"
     coffee-script "~1.6"
@@ -1059,7 +1063,8 @@ lodash@^4.17.10:
 
 lodash@~2.4.1:
   version "2.4.2"
-  resolved "http://registry.npmjs.org/lodash/-/lodash-2.4.2.tgz#fadd834b9683073da179b3eae6d9c0d15053f73e"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-2.4.2.tgz#fadd834b9683073da179b3eae6d9c0d15053f73e"
+  integrity sha1-+t2DS5aDBz2hebPq5tnA0VBT9z4=
 
 log@1.4.0:
   version "1.4.0"
@@ -1353,6 +1358,7 @@ punycode@^1.4.1:
 q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
+  integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
 qs@4.0.0:
   version "4.0.0"
