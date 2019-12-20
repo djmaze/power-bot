@@ -23,18 +23,18 @@ steps:
 
 ---
 kind: pipeline
-name: arm
+name: arm64
 
 platform:
   os: linux
-  arch: arm
+  arch: arm64
 
 steps:
   - name: build
-    image: plugins/docker:linux-arm
+    image: plugins/docker:linux-arm64
     settings:
       auto_tag: true
-      auto_tag_suffix: arm
+      auto_tag_suffix: arm64
       repo: mazzolino/power-bot
       username:
         from_secret: docker_username
@@ -49,10 +49,6 @@ steps:
 kind: pipeline
 name: manifest
 
-platform:
-  os: linux
-  arch: arm
-
 steps:
   - name: manifest
     image: plugins/manifest:1
@@ -65,11 +61,11 @@ steps:
         from_secret: docker_password
       platforms:
         - linux/amd64
-        - linux/arm
+        - linux/arm64
 
 depends_on:
   - amd64
-  - arm
+  - arm64
 
 ---
 kind: secret
